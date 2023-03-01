@@ -6,8 +6,8 @@ protected:
 	int sides_count;
 	int a, b, c, d;
 	int A, B, C, D;
-	Figure(int sides_count, int a, int b, int c, int d, int A, int B, int C, int D){
-		this->name = "Фигура";
+	Figure(std::string name, int sides_count, int a, int b, int c, int d, int A, int B, int C, int D){
+		this->name = name;
 		this->sides_count = sides_count;
 		this->a = a;
 		this->b = b;
@@ -19,7 +19,7 @@ protected:
 		this->D = D;
 	}
 public:
-	Figure() {}
+	Figure() : Figure("Фигура", 0, 0, 0, 0, 0, 0, 0, 0, 0){}
 	int get_a() { return a; } int get_b() { return b; } int get_c() { return c; } int get_d() { return d; }
 	int get_A() { return A; } int get_B() { return B; } int get_C() { return C; } int get_D() { return D; }
 	std::string get_name() { return name; }
@@ -27,77 +27,53 @@ public:
 };
 
 class Triangle : public Figure {
+protected:
+	Triangle(std::string name, int sides_count, int a, int b, int c, int A, int B, int C): Figure(name, 3, a, b, c, d, A, B, C, D){}
 public:
-	Triangle(): Triangle(a, b, c, A, B, C, sides_count){
-	}
-	Triangle(int a, int b, int c, int A, int B, int C, int sides_count): Figure(sides_count, a, b, c, d, A, B, C, D){
-		name = "Треугольник";
-	}
+	Triangle(std::string name, int a, int b, int c, int A, int B, int C) : Triangle(name, sides_count, a, b, c, A, B, C){}
 };
 
 class Right : public Triangle {
 public:
-	Right() : Right(C){}
-	Right(int C) : Triangle(){
-        name = "Прямоугольный Треугольник";
+	Right(std::string name, int a, int b, int c, int A, int B) : Triangle(name, sides_count, a, b, c, A, B, 90){}
+};
+
+class Isosceles : public Triangle {
+public:
+	Isosceles(std::string name, int b, int A, int B) : Triangle(name, sides_count, 10, b, 10, A, B, 50) {}
+};
+class Equilateral : public Triangle {
+public:
+	Equilateral(std::string name) : Triangle(name, sides_count, 30, 30, 30, 60, 60, 60) {}
+};
+
+class Quadrangle : public Figure {
+protected:
+	Quadrangle(std::string name, int sides_count, int a, int b, int c, int d, int A, int B, int C, int D): Figure(name, 4, a, b, c, d, A, B, C, D) {}
+public:
+	Quadrangle(std::string name, int a, int b, int c, int d, int A, int B, int C, int D) : Quadrangle(name, sides_count, a, b, c, d, A, B, C, D){}
+};
+
+class Rectangle : public Quadrangle {
+public:
+	Rectangle(std::string name, int a, int b) : Quadrangle(name, sides_count, a, b, a, b, 90, 90, 90, 90){}
+};
+class Square : public Rectangle {
+public:
+	Square(std::string name, int a) : Rectangle(name, a, a){}
+};
+
+class Parallelogram : public Quadrangle {
+public:
+	Parallelogram(std::string name, int a, int b, int A, int B) : Quadrangle(name, sides_count, a, b, a, b, A, B, A, B) {
 	}
 };
 
-// class Isosceles : public Triangle {
-// public:
-// 	Isosceles(int a, int c, int C)  {
-// 		name = "Равнобедренный Треугольник";
-// 	}
-// };
-// class Equilateral : public Triangle {
-// public:
-// 	Equilateral(int a, int b, int c, int A, int B, int C)  {
-// 		name = "Равносторонний Треугольник";
-// 	}
-// };
-
-// class Quadrangle :public Figure {
-// public:
-// 	Quadrangle() {
-// 		sides_count = 4;
-// 		name = "Четырехугольник";
-// 		a = 10, b = 20, c = 30, d = 40;
-// 		A = 50, B = 60, C = 70, D = 80;
-// 	}
-// };
-
-// class Rectangle : public Quadrangle {
-// public:
-// 	Rectangle() {
-// 		name = "Прямоугольник";
-// 		a = 10, b = 20, c = 10, d = 20;
-// 		A = 90, B = 90, C = 90, D = 90;
-// 	}
-// };
-// class Square : public Rectangle {
-// public:
-// 	Square() {
-// 		name = "Квадрат";
-// 		a = 20, c = 20;
-// 	}
-// };
-
-// class Parallelogram : public Quadrangle {
-// public:
-// 	Parallelogram() {
-// 		name = "Параллелограмм";
-// 		a = 20, b = 30, c = 20, d = 30;
-// 		A = 30, B = 40, C = 30, D = 40;
-// 	}
-// };
-
-// class Romb : public Parallelogram {
-// public:
-// 	Romb() {
-// 		name = "Ромб";
-// 		a = 30, c = 30;
-// 	}
-// };
+class Romb : public Parallelogram {
+public:
+	Romb(std::string name,int a, int A, int B) : Parallelogram(name, a, a, A, B) {
+	}
+};
 
 void print_info(Figure* figure, int sides_count) {
 	sides_count == 3 ?
@@ -111,35 +87,35 @@ void print_info(Figure* figure, int sides_count) {
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	Figure* triangle = new Triangle(10, 20, 30, 50, 60, 70, 3);
+	Figure* triangle = new Triangle("Труегольник", 10, 20, 30, 50, 60, 70);
 	print_info(triangle, triangle->get_sides_count());
-	Figure* right = new Right(90);
+	Figure* right = new Right("Прямоугольный треугольник",10, 20, 30, 50, 60);
 	print_info(right, right->get_sides_count());
-	// Figure* isosceles = new Isosceles(10, 10, 50);
-	// print_info(isosceles, isosceles->get_sides_count());
-	// Figure* equilateral = new Equilateral(30, 30, 30, 60, 60, 60);
-	// print_info(equilateral, equilateral->get_sides_count());
+	Figure* isosceles = new Isosceles("Равнобедренный треугольник", 30, 50, 60);
+	print_info(isosceles, isosceles->get_sides_count());
+	Figure* equilateral = new Equilateral("Равносторонний треугольник");
+	print_info(equilateral, equilateral->get_sides_count());
 
-	// Figure* quadrangle = new Quadrangle;
-	// print_info(quadrangle, quadrangle->get_sides_count());
-	// Figure* rectangle = new Rectangle;
-	// print_info(rectangle, rectangle->get_sides_count());
-	// Figure* square = new Square;
-	// print_info(square, square->get_sides_cou nt());
-	// Figure* parallelogramm = new Parallelogram;
-	// print_info(parallelogramm, parallelogramm->get_sides_count());
-	// Figure* romb = new Romb;
-	// print_info(romb, romb->get_sides_count());
+	Figure* quadrangle = new Quadrangle("Четырехугольник", 10, 20, 30, 40, 50, 60, 70, 80);
+	print_info(quadrangle, quadrangle->get_sides_count());
+	Figure* rectangle = new Rectangle("Прямоугольник", 10, 20);
+	print_info(rectangle, rectangle->get_sides_count());
+	Figure* square = new Square("Квадрат", 20);
+	print_info(square, square->get_sides_count());
+	Figure* parallelogramm = new Parallelogram("Параллелограмм", 20, 30, 30, 40);
+	print_info(parallelogramm, parallelogramm->get_sides_count());
+	Figure* romb = new Romb("Ромб", 30, 30, 40);
+	print_info(romb, romb->get_sides_count());
 
 
 
 	delete triangle;
 	delete right;
-	// delete isosceles;
-	// delete equilateral;
-	// delete quadrangle;
-	// delete rectangle;
-	// delete square;
-	// delete parallelogramm;
-	// delete romb;
+	delete isosceles;
+	delete equilateral;
+	delete quadrangle;
+	delete rectangle;
+	delete square;
+	delete parallelogramm;
+	delete romb;
 }
