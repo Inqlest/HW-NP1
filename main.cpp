@@ -28,50 +28,50 @@ public:
 
 class Triangle : public Figure {
 protected:
-	Triangle(std::string name, int sides_count, int a, int b, int c, int A, int B, int C): Figure(name, 3, a, b, c, d, A, B, C, D){}
+	Triangle(std::string name, int a, int b, int c, int A, int B, int C): Figure(name, 3, a, b, c, d, A, B, C, D){}
 public:
-	Triangle(std::string name, int a, int b, int c, int A, int B, int C) : Triangle(name, sides_count, a, b, c, A, B, C){}
+	Triangle(int a, int b, int c, int A, int B, int C) : Triangle("Труегольник", a, b, c, A, B, C){}
 };
 
 class Right : public Triangle {
 public:
-	Right(std::string name, int a, int b, int c, int A, int B) : Triangle(name, sides_count, a, b, c, A, B, 90){}
+	Right(int a, int b, int c, int A, int B) : Triangle("Прямоугольный треугольник", a, b, c, A, B, 90){}
 };
 
 class Isosceles : public Triangle {
 public:
-	Isosceles(std::string name, int b, int A, int B) : Triangle(name, sides_count, 10, b, 10, A, B, 50) {}
+	Isosceles(int a, int b, int A, int B) : Triangle("Равнобедренный треугольник", a, b, a, A, B, A) {}
 };
 class Equilateral : public Triangle {
 public:
-	Equilateral(std::string name) : Triangle(name, sides_count, 30, 30, 30, 60, 60, 60) {}
+	Equilateral(int a) : Triangle("Равносторонний треугольник", a, a, a, 60, 60, 60) {}
 };
 
 class Quadrangle : public Figure {
 protected:
-	Quadrangle(std::string name, int sides_count, int a, int b, int c, int d, int A, int B, int C, int D): Figure(name, 4, a, b, c, d, A, B, C, D) {}
+	Quadrangle(std::string name, int a, int b, int c, int d, int A, int B, int C, int D): Figure(name, 4, a, b, c, d, A, B, C, D) {}
 public:
-	Quadrangle(std::string name, int a, int b, int c, int d, int A, int B, int C, int D) : Quadrangle(name, sides_count, a, b, c, d, A, B, C, D){}
+	Quadrangle(int a, int b, int c, int d, int A, int B, int C, int D) : Quadrangle("Четырехугольник", a, b, c, d, A, B, C, D){}
 };
 
 class Rectangle : public Quadrangle {
 public:
-	Rectangle(std::string name, int a, int b) : Quadrangle(name, sides_count, a, b, a, b, 90, 90, 90, 90){}
+	Rectangle(int a, int b) : Quadrangle("Прямоугольник", a, b, a, b, 90, 90, 90, 90){}
 };
-class Square : public Rectangle {
+class Square : public Quadrangle {
 public:
-	Square(std::string name, int a) : Rectangle(name, a, a){}
+	Square(int a) : Quadrangle("Квадрат", a, a, a, a, 90, 90, 90, 90){}
 };
 
 class Parallelogram : public Quadrangle {
 public:
-	Parallelogram(std::string name, int a, int b, int A, int B) : Quadrangle(name, sides_count, a, b, a, b, A, B, A, B) {
+	Parallelogram(int a, int b, int A, int B) : Quadrangle("Параллелограмм", a, b, a, b, A, B, A, B) {
 	}
 };
 
-class Romb : public Parallelogram {
+class Romb : public Quadrangle {
 public:
-	Romb(std::string name,int a, int A, int B) : Parallelogram(name, a, a, A, B) {
+	Romb(int a, int A, int B) : Quadrangle("Ромб", a, a, a, a, A, B, A, B) {	
 	}
 };
 
@@ -87,24 +87,24 @@ void print_info(Figure* figure, int sides_count) {
 
 int main() {
 	setlocale(LC_ALL, "Russian");
-	Figure* triangle = new Triangle("Труегольник", 10, 20, 30, 50, 60, 70);
+	Figure* triangle = new Triangle(10, 20, 30, 50, 60, 70);
 	print_info(triangle, triangle->get_sides_count());
-	Figure* right = new Right("Прямоугольный треугольник",10, 20, 30, 50, 60);
+	Figure* right = new Right(10, 20, 30, 50, 60);
 	print_info(right, right->get_sides_count());
-	Figure* isosceles = new Isosceles("Равнобедренный треугольник", 30, 50, 60);
+	Figure* isosceles = new Isosceles(10, 30, 50, 60);
 	print_info(isosceles, isosceles->get_sides_count());
-	Figure* equilateral = new Equilateral("Равносторонний треугольник");
+	Figure* equilateral = new Equilateral(30);
 	print_info(equilateral, equilateral->get_sides_count());
 
-	Figure* quadrangle = new Quadrangle("Четырехугольник", 10, 20, 30, 40, 50, 60, 70, 80);
+	Figure* quadrangle = new Quadrangle(10, 20, 30, 40, 50, 60, 70, 80);
 	print_info(quadrangle, quadrangle->get_sides_count());
-	Figure* rectangle = new Rectangle("Прямоугольник", 10, 20);
+	Figure* rectangle = new Rectangle(10, 20);
 	print_info(rectangle, rectangle->get_sides_count());
-	Figure* square = new Square("Квадрат", 20);
+	Figure* square = new Square(20);
 	print_info(square, square->get_sides_count());
-	Figure* parallelogramm = new Parallelogram("Параллелограмм", 20, 30, 30, 40);
+	Figure* parallelogramm = new Parallelogram(20, 30, 30, 40);
 	print_info(parallelogramm, parallelogramm->get_sides_count());
-	Figure* romb = new Romb("Ромб", 30, 30, 40);
+	Figure* romb = new Romb(30, 30, 40);
 	print_info(romb, romb->get_sides_count());
 
 
